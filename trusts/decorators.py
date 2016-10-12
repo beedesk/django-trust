@@ -14,6 +14,7 @@ from trusts import utils
 
 
 class P(object):
+
     def __init__(self, perm, **fieldlookups):
         self._perm = perm
         self._fieldlookups = fieldlookups
@@ -23,7 +24,8 @@ class P(object):
 
     def __and__(self, other):
         if not isinstance(other, self.__class__):
-            raise TypeError("unsupported operand type(s) for &: '%s' and '%s'" % type(self), type(other))
+            raise TypeError(
+                "unsupported operand type(s) for &: '%s' and '%s'" % type(self), type(other))
 
         p = type(self)('')
         p._left_operand = self
@@ -33,7 +35,8 @@ class P(object):
 
     def __or__(self, other):
         if not isinstance(other, self.__class__):
-            raise TypeError("unsupported operand type(s) for |: '%s' and '%s'" % type(self), type(other))
+            raise TypeError(
+                "unsupported operand type(s) for |: '%s' and '%s'" % type(self), type(other))
 
         p = type(self)('')
         p._left_operand = self
@@ -55,7 +58,8 @@ class P(object):
         if not self._operator:
             return [self]
 
-        # Do not use += or leaves.extend here since it changes the original list
+        # Do not use += or leaves.extend here since it changes the original
+        # list
         leaves = leaves + self._left_operand.get_leaves()
         leaves = leaves + self._right_operand.get_leaves()
 
@@ -75,6 +79,7 @@ class P(object):
 
 
 class R(object):
+
     def __init__(self, key):
         self.key = key
 
@@ -155,7 +160,8 @@ def _resolve_fieldlookups(request, kwargs, fieldlookups_kwargs=None, fieldlookup
 
     resolved_fields.update(_collect_args(kwargs, fieldlookups_kwargs))
     resolved_fields.update(_collect_args(request.GET, fieldlookups_getparams))
-    resolved_fields.update(_collect_args(request.POST, fieldlookups_postparams, ))
+    resolved_fields.update(_collect_args(
+        request.POST, fieldlookups_postparams, ))
 
     for field, lookup in fieldlookups.items():
         if isinstance(lookup, K):
@@ -166,7 +172,8 @@ def _resolve_fieldlookups(request, kwargs, fieldlookups_kwargs=None, fieldlookup
             source = request.POST
         else:
             continue
-        resolved_fields[field] = source[lookup.key] if lookup.key in source else None
+        resolved_fields[field] = source[
+            lookup.key] if lookup.key in source else None
 
     return resolved_fields or None
 
